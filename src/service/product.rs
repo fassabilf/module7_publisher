@@ -2,6 +2,7 @@ use rocket::http::Status;
 use rocket::serde::json::Json;
 
 use bambangshop::{Result, compose_error_response};
+use crate::model::notification::Notification;
 use crate::model::product::Product;
 use crate::repository::product::ProductRepository;
 use crate::service::notification::NotificationService;
@@ -53,6 +54,7 @@ impl ProductService {
             ));
         }
         let product: Product = product_opt.unwrap();
+
         NotificationService.notify(&product.product_type, "PROMOTION", product.clone());
         return Ok(product);
     }

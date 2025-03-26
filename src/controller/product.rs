@@ -45,4 +45,3 @@ pub fn publish(id: usize) -> Result<Json<Product>> {
         Err(e) => Err(e)
     };
 }
-
