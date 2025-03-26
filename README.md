@@ -48,7 +48,7 @@ You can install Postman via this website: https://www.postman.com/downloads/
     (You might want to use `cargo check` if you only need to verify your work without running the app.)
 
 ## Mandatory Checklists (Publisher)
--   [ ] Clone https://gitlab.com/ichlaffterlalu/bambangshop to a new repository.
+-   [X] Clone https://gitlab.com/ichlaffterlalu/bambangshop to a new repository.
 -   **STAGE 1: Implement models and repositories**
     -   [X] Commit: `Create Subscriber model struct.`
     -   [X] Commit: `Create Notification model struct.`
@@ -65,11 +65,11 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [X] Commit: `Implement unsubscribe function in Notification controller.`
     -   [X] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
 -   **STAGE 3: Implement notification mechanism**
-    -   [ ] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
-    -   [ ] Commit: `Implement notify function in Notification service to notify each Subscriber.`
-    -   [ ] Commit: `Implement publish function in Program service and Program controller.`
-    -   [ ] Commit: `Edit Product service methods to call notify after create/delete.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-3" questions in this README.
+    -   [X] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
+    -   [X] Commit: `Implement notify function in Notification service to notify each Subscriber.`
+    -   [X] Commit: `Implement publish function in Program service and Program controller.`
+    -   [X] Commit: `Edit Product service methods to call notify after create/delete.`
+    -   [X] Write answers of your learning module's "Reflection Publisher-3" questions in this README.
 
 ## Your Reflections
 This is the place for you to write reflections:
@@ -120,3 +120,22 @@ This is the place for you to write reflections:
 
 
 #### Reflection Publisher-3
+
+1. **Observer Pattern yang digunakan dalam tutorial ini adalah Push Model.**  
+   Publisher secara aktif mengirimkan data (notifikasi) ke semua subscriber ketika event tertentu terjadi, seperti saat produk dibuat, dihapus, atau dipromosikan. Subscriber hanya perlu menyediakan endpoint `/receive` dan tidak perlu melakukan polling data secara aktif.
+
+2. **Keuntungan dan kerugian jika menggunakan Pull Model:**
+
+   - *Keuntungan Pull Model:*  
+     - Subscriber punya kontrol lebih besar: bisa pilih kapan dan seberapa sering ngecek update.
+     - Publisher lebih ringan bebannya karena tidak perlu memikirkan semua subscriber secara aktif.
+
+   - *Kerugian Pull Model (dalam konteks tutorial ini):*  
+     - Subscriber harus melakukan polling berkala, yang bisa membebani jaringan.
+     - Respon terhadap event jadi tidak real-time, ada delay tergantung interval polling.
+     - Logika untuk nyimpan state perubahan jadi lebih rumit.
+
+   Jadi, Push model lebih cocok buat tutorial ini karena lebih langsung dan real-time.
+
+3. **Jika tidak menggunakan multi-threading dalam proses notifikasi:**  
+   Notifikasi akan dikirim satu per satu secara blocking. Artinya, kalau ada banyak subscriber, publisher harus menunggu setiap request selesai dulu baru lanjut ke subscriber berikutnya. Hal ini bisa bikin aplikasi lambat atau bahkan stuck kalau salah satu subscriber lama merespons atau error. Dengan multi-threading, kita bisa kirim notifikasi ke semua subscriber secara paralel tanpa menghambat proses utama aplikasi.
