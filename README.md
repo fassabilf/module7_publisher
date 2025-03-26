@@ -58,12 +58,12 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [X] Commit: `Implement delete function in Subscriber repository.`
     -   [X] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
 -   **STAGE 2: Implement services and controllers**
-    -   [ ] Commit: `Create Notification service struct skeleton.`
-    -   [ ] Commit: `Implement subscribe function in Notification service.`
-    -   [ ] Commit: `Implement subscribe function in Notification controller.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification service.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification controller.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
+    -   [X] Commit: `Create Notification service struct skeleton.`
+    -   [X] Commit: `Implement subscribe function in Notification service.`
+    -   [X] Commit: `Implement subscribe function in Notification controller.`
+    -   [X] Commit: `Implement unsubscribe function in Notification service.`
+    -   [X] Commit: `Implement unsubscribe function in Notification controller.`
+    -   [X] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
 -   **STAGE 3: Implement notification mechanism**
     -   [ ] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
     -   [ ] Commit: `Implement notify function in Notification service to notify each Subscriber.`
@@ -92,5 +92,31 @@ This is the place for you to write reflections:
 
 
 #### Reflection Publisher-2
+
+1. **Kenapa kita perlu pisahkan “Service” dan “Repository” dari Model?**
+
+   Memisahkan `Service` dan `Repository` dari `Model` adalah praktik *separation of concerns* yang sangat penting. Kalau `Model` berisi sekaligus data, logic bisnis, dan akses data (ke “database”), maka tanggung jawabnya jadi terlalu besar (*God Object*). Dengan membagi:
+   - `Repository` hanya fokus ke akses data (get, add, delete),
+   - `Service` mengatur logika bisnis (validasi, transformasi data, atau memicu notifikasi),
+   kita jadi punya kode yang lebih modular, mudah diuji, dan gampang dirawat. Misalnya saat logika notifikasi berubah, kita cukup ubah `Service`, tanpa ganggu `Model` atau `Repository`.
+
+2. **Apa yang terjadi kalau kita hanya gunakan Model?**
+
+   Kalau semua tanggung jawab ditaruh di `Model`, maka `Model` akan punya terlalu banyak logika dan dependency ke banyak bagian lain. Contohnya:
+   - `Model` `Product` bisa tiba-tiba punya kode untuk menambahkan subscriber, atau kirim notifikasi.
+   - `Subscriber` bisa punya logic untuk filtering produk.
+   
+   Ini bikin kode susah dibaca dan tinggi coupling antar model. Kalau satu model berubah, model lain bisa ikut rusak. Ujung-ujungnya, scalability turun dan debugging jadi mimpi buruk.
+
+3. **Eksplorasi dan pengalaman dengan Postman**
+
+   Ya, saya sudah eksplor lebih dalam tentang Postman, dan alat ini sangat membantu untuk uji coba API. Fitur-fitur yang saya suka dan berguna:
+   - **Collection & Environment**: saya bisa simpan endpoint, body, dan variabel base URL untuk dipakai berulang.
+   - **History**: sangat membantu kalau mau kirim ulang request yang sebelumnya.
+   - **Visual feedback**: mempermudah ngecek respons API secara langsung (tanpa harus curl di terminal).
+   - **Pre-request & Test scripts**: ini powerful banget kalau nanti mau otomatisasi pengujian di proyek kelompok.
+
+   Dengan Postman, saya bisa fokus ngembangin dan ngetes fitur tanpa harus bikin front-end-nya dulu.
+
 
 #### Reflection Publisher-3
