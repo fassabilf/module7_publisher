@@ -50,13 +50,13 @@ You can install Postman via this website: https://www.postman.com/downloads/
 ## Mandatory Checklists (Publisher)
 -   [ ] Clone https://gitlab.com/ichlaffterlalu/bambangshop to a new repository.
 -   **STAGE 1: Implement models and repositories**
-    -   [ ] Commit: `Create Subscriber model struct.`
-    -   [ ] Commit: `Create Notification model struct.`
-    -   [ ] Commit: `Create Subscriber database and Subscriber repository struct skeleton.`
-    -   [ ] Commit: `Implement add function in Subscriber repository.`
-    -   [ ] Commit: `Implement list_all function in Subscriber repository.`
-    -   [ ] Commit: `Implement delete function in Subscriber repository.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
+    -   [X] Commit: `Create Subscriber model struct.`
+    -   [X] Commit: `Create Notification model struct.`
+    -   [X] Commit: `Create Subscriber database and Subscriber repository struct skeleton.`
+    -   [X] Commit: `Implement add function in Subscriber repository.`
+    -   [X] Commit: `Implement list_all function in Subscriber repository.`
+    -   [X] Commit: `Implement delete function in Subscriber repository.`
+    -   [X] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
 -   **STAGE 2: Implement services and controllers**
     -   [ ] Commit: `Create Notification service struct skeleton.`
     -   [ ] Commit: `Implement subscribe function in Notification service.`
@@ -77,6 +77,19 @@ This is the place for you to write reflections:
 ### Mandatory (Publisher) Reflections
 
 #### Reflection Publisher-1
+
+1. **Apakah kita masih butuh interface (atau trait di Rust) dalam kasus BambangShop ini?**
+
+   Dalam Observer pattern seperti yang dijelaskan oleh buku *Head First Design Patterns*, `Subscriber` biasanya didefinisikan sebagai interface agar fleksibel dan bisa mengakomodasi berbagai jenis subscriber dengan implementasi berbeda. Tapi dalam kasus BambangShop, kita hanya punya satu jenis subscriber dengan cara kerja yang seragam: menerima notifikasi via HTTP POST. Karena semua subscriber diperlakukan sama, menggunakan satu `struct` `Subscriber` sudah cukup. Tidak ada kebutuhan untuk behavior polymorphic di sini, sehingga penggunaan `trait` belum dibutuhkan saat ini.
+
+2. **Apakah `Vec` cukup atau perlu `DashMap` seperti sekarang?**
+
+   Karena `url` pada `Subscriber` bersifat unik untuk setiap tipe produk, maka menyimpan subscriber dalam `Vec` akan menyulitkan operasi seperti pencarian atau penghapusan. Kita harus traverse seluruh list untuk cari berdasarkan URL. Sebaliknya, `DashMap` memberikan performa lebih baik karena mendukung akses langsung ke elemen berdasarkan key (dalam hal ini URL), dan juga sudah thread-safe. Jadi untuk efisiensi dan kemudahan implementasi, `DashMap` adalah pilihan yang lebih tepat.
+
+3. **Apakah masih perlu `DashMap` kalau kita pakai Singleton pattern saja?**
+
+   Singleton pattern bisa digunakan untuk membuat instance global, tapi tidak menyelesaikan masalah concurrency. Rust punya sistem ownership yang ketat untuk menjaga *thread safety*, dan ketika kita ingin mutable access dari banyak thread, kita perlu *thread-safe data structure*. Dalam kasus ini, `DashMap` menyediakan map yang aman untuk digunakan secara bersamaan oleh banyak thread. Jadi walaupun kita pakai Singleton, kita tetap perlu data structure seperti `DashMap` di dalamnya agar aman dari race condition.
+
 
 #### Reflection Publisher-2
 
